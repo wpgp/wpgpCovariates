@@ -6,7 +6,8 @@
 avalible covariates for a country}
 \usage{
 wpgpGetCountryCovariate(ISO3 = NULL, covariate = NULL, year = NULL,
-  destDir = NULL, username = NULL, password = NULL, quiet = FALSE)
+  destDir = NULL, username = NULL, password = NULL, quiet = TRUE,
+  frCSVDownload = FALSE, method = "auto")
 }
 \arguments{
 \item{ISO3}{a country code}
@@ -22,6 +23,12 @@ wpgpGetCountryCovariate(ISO3 = NULL, covariate = NULL, year = NULL,
 \item{password}{ftp password to WorldPop ftp server}
 
 \item{quiet}{Download Without any messages if TRUE}
+
+\item{frCSVDownload}{If TRUE, a new wpgAllCovariates.csv file will downloaded}
+
+\item{method}{Method to be used for downloading files. Current download methods
+are "internal", "wininet" (Windows only) "libcurl", "wget" and
+"curl", and there is a value "auto"}
 }
 \value{
 Raster file will be downloaded

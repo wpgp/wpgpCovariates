@@ -6,7 +6,7 @@
 avalible covariates for a country}
 \usage{
 wpgpListCountryCovariates(ISO3 = NULL, username = NULL, password = NULL,
-  detailed = FALSE)
+  detailed = FALSE, frCSVDownload = FALSE)
 }
 \arguments{
 \item{ISO3}{a country code}
@@ -16,6 +16,8 @@ wpgpListCountryCovariates(ISO3 = NULL, username = NULL, password = NULL,
 \item{password}{ftp password to WorldPop ftp server}
 
 \item{detailed}{If TRUE, then more information will be given}
+
+\item{frCSVDownload}{If TRUE, a new wpgAllCovariates.csv file will downloaded}
 }
 \value{
 Dataframe

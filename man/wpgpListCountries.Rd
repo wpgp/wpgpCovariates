@@ -5,7 +5,8 @@
 \title{wpgpListCountries function will return a list of the country
 avalible to download}
 \usage{
-wpgpListCountries(username, password, verbose = FALSE)
+wpgpListCountries(username, password, verbose = FALSE,
+  frCSVDownload = FALSE)
 }
 \arguments{
 \item{username}{ftp username to WorldPop ftp server}
@@ -13,6 +14,8 @@ wpgpListCountries(username, password, verbose = FALSE)
 \item{password}{ftp password to WorldPop ftp server}
 
 \item{verbose}{quiet If TRUE, suppress status messages (if any)}
+
+\item{frCSVDownload}{If TRUE, a new wpgAllCovariates.csv file will downloaded}
 }
 \value{
 Dataframe
