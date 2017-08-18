@@ -99,13 +99,13 @@ wpgpGetCSVFileAllCovariates <- function(username, password, frCSVDownload=FALSE)
 
     wpgpDownloadFileFromFTP(file_remote, wpgpAllCSVFilesPath, username, password, quiet=TRUE)
 
-    df.all.Covariates = utils::read.csv(wpgpAllCSVFilesPath)
+    df.all.Covariates = utils::read.csv(wpgpAllCSVFilesPath, stringsAsFactors=FALSE)
 
     return(df.all.Covariates)
 
   }else{
 
-    df.all.Covariates = utils::read.csv(wpgpAllCSVFilesPath)
+    df.all.Covariates = utils::read.csv(wpgpAllCSVFilesPath, stringsAsFactors=FALSE)
 
     return(df.all.Covariates)
   }
