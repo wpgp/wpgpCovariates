@@ -221,23 +221,29 @@ wpgpGetCountryCovariate <- function(ISO3=NULL,
 
   ISO3 <- toupper(ISO3)
   covariate <- tolower(covariate)
-
-  df.filtered <- df[df$ISO3 == ISO3 & df$CvtName == covariate & df$Year == year, ]
+  # allow filtering by vectors
+  df.filtered <- df[df$ISO3 %in% ISO3 & df$CvtName %in% covariate & df$Year %in% year, ]
 
   if (nrow(df.filtered)!=1){
-    stop( paste0("Entered Covariates: ",covariate," does not present in WP. Please check Year and name of the dataset"))
+    stop( paste0("Entered Covariates: ",covariate," not present in WP. Please check Year and name of the dataset"))
   }
 
   credentials <- paste(username,password,sep = ":")
 
   file_remote <- paste0(ISO3,'/',df.filtered$Folder,'/',df.filtered$RstName,'.tif')
-
   file_local <- paste0(destDir,'/',df.filtered$RstName,'.tif')
   
-  ftpReturn <- wpgpDownloadFileFromFTP(file_remote, file_local, username, password, quiet=quiet, method=method)
-
-  if(!is.null(ftpReturn)){
-    return(file_local)
+  # preallocate return storage
+  outFileList <- vector(mode="list", length=nrow(df.filtered))
+  for(i in 1:nrow(df.filtered)){
+    ftpReturn <- wpgpDownloadFileFromFTP(file_remote[i], file_local[i], username, password, quiet=quiet, method=method)
+    if(!is.null(ftpReturn)){
+      outFileList[[i]] <- file_local[i]
+    } else{
+      outFileList[[i]] <- NULL
+    }
   }
+  
+  return(outFileList)
 }
 
