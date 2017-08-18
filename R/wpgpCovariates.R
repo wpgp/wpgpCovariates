@@ -65,6 +65,7 @@ wpgpDownloadFileFromFTP <- function(file_path, dest_file, username, password, qu
         #message(paste("Processed URL:", file_remote))
         message(paste("It took ", tmDiff(tmStartDw ,tmEndDw,frm="hms"), "to download" ))
       }
+      return(dest_file)
     }
   )
 }
@@ -238,8 +239,6 @@ wpgpGetCountryCovariate <- function(ISO3=NULL,
 
   file_local <- paste0(destDir,'/',df.filtered$RstName,'.tif')
 
-  wpgpDownloadFileFromFTP(file_remote, file_local, username, password, quiet=quiet, method=method)
-
-
+  return(wpgpDownloadFileFromFTP(file_remote, file_local, username, password, quiet=quiet, method=method))
 }
 
