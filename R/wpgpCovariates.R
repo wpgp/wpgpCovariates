@@ -245,7 +245,7 @@ wpgpGetCountryCovariate <- function(ISO3=NULL,
   }
   
   returnList <- df.filtered[c("ISO3","CvtName","RstName")]
-  returnList$filepath <- outFileList
-  return(outFileList)
+  returnList$filepath <- outFiles
+  return(returnList)
 }
 
