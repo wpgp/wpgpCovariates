@@ -127,25 +127,7 @@ wpgpListCountries <- function(username, password, verbose=FALSE, frCSVDownload=F
 
   df <- wpgpGetCSVFileAllCovariates(username, password, frCSVDownload)
 
-  df.sub<-as.data.frame(df[!duplicated(df$ISO3), ])
-
-  df.ISO3 <- data.frame(ISO3=character(),
-                        ISONumber=character(),
-                        Name=character(),
-                        stringsAsFactors=FALSE)
-
-  for(i in 1:nrow(df.sub)) {
-
-    df.ISO3<- rbind( df.ISO3,
-                     data.frame(
-                       ISO3=as.character(df.sub[[i,"ISO3"]]),
-                       ISONumber=as.character(df.sub[[i,"ISOnumber"]]),
-                       NameEnglish=as.character(df.sub[[i,"NameEnglish"]]),
-                       stringsAsFactors=FALSE )
-    )
-  }
-
-  return(df.ISO3)
+  return(df[!duplicated(df$ISO3), c("ISO3","ISOnumber","NameEnglish")])
 }
 
 
