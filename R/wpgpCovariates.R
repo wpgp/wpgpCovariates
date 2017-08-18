@@ -65,6 +65,7 @@ wpgpDownloadFileFromFTP <- function(file_path, dest_file, username, password, qu
         #message(paste("Processed URL:", file_remote))
         message(paste("It took ", tmDiff(tmStartDw ,tmEndDw,frm="hms"), "to download" ))
       }
+      return(dest_file)
     }
   )
 }
@@ -99,13 +100,13 @@ wpgpGetCSVFileAllCovariates <- function(username, password, frCSVDownload=FALSE)
 
     wpgpDownloadFileFromFTP(file_remote, wpgpAllCSVFilesPath, username, password, quiet=TRUE)
 
-    df.all.Covariates = utils::read.csv(wpgpAllCSVFilesPath)
+    df.all.Covariates = utils::read.csv(wpgpAllCSVFilesPath, stringsAsFactors=FALSE)
 
     return(df.all.Covariates)
 
   }else{
 
-    df.all.Covariates = utils::read.csv(wpgpAllCSVFilesPath)
+    df.all.Covariates = utils::read.csv(wpgpAllCSVFilesPath, stringsAsFactors=FALSE)
 
     return(df.all.Covariates)
   }
@@ -127,25 +128,7 @@ wpgpListCountries <- function(username, password, verbose=FALSE, frCSVDownload=F
 
   df <- wpgpGetCSVFileAllCovariates(username, password, frCSVDownload)
 
-  df.sub<-as.data.frame(df[!duplicated(df$ISO3), ])
-
-  df.ISO3 <- data.frame(ISO3=character(),
-                        ISONumber=character(),
-                        Name=character(),
-                        stringsAsFactors=FALSE)
-
-  for(i in 1:nrow(df.sub)) {
-
-    df.ISO3<- rbind( df.ISO3,
-                     data.frame(
-                       ISO3=as.character(df.sub[[i,"ISO3"]]),
-                       ISONumber=as.character(df.sub[[i,"ISOnumber"]]),
-                       NameEnglish=as.character(df.sub[[i,"NameEnglish"]]),
-                       stringsAsFactors=FALSE )
-    )
-  }
-
-  return(df.ISO3)
+  return(df[!duplicated(df$ISO3), c("ISO3","ISOnumber","NameEnglish")])
 }
 
 
@@ -224,7 +207,7 @@ wpgpListCountryCovariates <- function(ISO3=NULL,
 wpgpGetCountryCovariate <- function(ISO3=NULL,
                                      covariate=NULL,
                                      year=NULL,
-                                     destDir=NULL,
+                                     destDir=tempdir(),
                                      username=NULL,
                                      password=NULL,
                                      quiet=TRUE,
@@ -256,8 +239,6 @@ wpgpGetCountryCovariate <- function(ISO3=NULL,
 
   file_local <- paste0(destDir,'/',df.filtered$RstName,'.tif')
 
-  wpgpDownloadFileFromFTP(file_remote, file_local, username, password, quiet=quiet, method=method)
-
-
+  return(wpgpDownloadFileFromFTP(file_remote, file_local, username, password, quiet=quiet, method=method))
 }
 
