@@ -234,16 +234,18 @@ wpgpGetCountryCovariate <- function(ISO3=NULL,
   file_local <- paste0(destDir,'/',df.filtered$RstName,'.tif')
   
   # preallocate return storage
-  outFileList <- vector(mode="list", length=nrow(df.filtered))
+  outFiles <- vector(mode="character", length=nrow(df.filtered))
   for(i in 1:nrow(df.filtered)){
     ftpReturn <- wpgpDownloadFileFromFTP(file_remote[i], file_local[i], username, password, quiet=quiet, method=method)
     if(!is.null(ftpReturn)){
-      outFileList[[i]] <- file_local[i]
+      outFiles[i] <- file_local[i]
     } else{
-      outFileList[[i]] <- NULL
+      outFiles[i] <- NULL
     }
   }
   
+  returnList <- df.filtered[c("ISO3","CvtName","RstName")]
+  returnList$filepath <- outFileList
   return(outFileList)
 }
 
