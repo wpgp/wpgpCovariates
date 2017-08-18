@@ -174,9 +174,7 @@ wpgpListCountryCovariates <- function(ISO3=NULL,
   }else{
 
     keeps <- c("ISO3", "ISOnumber",  "CvtName", "Year", "Description")
-    df.filtereddf.kept <- df.filtered[keeps]
-
-    return(df.filtereddf.kept)
+    return(df.filtered[keeps])
   }
 
 }
