@@ -43,21 +43,19 @@ wpgpDownloadFileFromFTP <- function(file_path, dest_file, username, password, qu
 
   tmStartDw  <- Sys.time()
 
-  tryCatch(
+  checkStatus <- tryCatch(
     {
       utils::download.file(file_remote, destfile=dest_file,mode="wb",quiet=quiet, method=method)
     },
-    error=function(cond) {
+    error=function(cond){
       message(paste("URL does not seem to exist:", file_remote))
       message("Here's the original error message:")
       message(cond)
-      return(NULL)
     },
-    warning=function(cond) {
+    warning=function(cond){
       message(paste("URL caused a warning:", file_remote))
       message("Here's the original warning message:")
       message(cond)
-      return(NULL)
     },
     finally={
       if (!quiet){
@@ -65,9 +63,15 @@ wpgpDownloadFileFromFTP <- function(file_path, dest_file, username, password, qu
         #message(paste("Processed URL:", file_remote))
         message(paste("It took ", tmDiff(tmStartDw ,tmEndDw,frm="hms"), "to download" ))
       }
-      return(dest_file)
     }
-  )
+    )
+  
+  if(inherits(checkStatus, "error") | inherits(checkStatus, "warning")){
+    return(NULL)
+  } else{
+    return(1)
+  }
+  
 }
 
 # wpgpGetCSVFileAllCovariates function to download csv
@@ -99,17 +103,10 @@ wpgpGetCSVFileAllCovariates <- function(username, password, frCSVDownload=FALSE)
     file_remote <-paste0('wpgAllCovariates.csv')
 
     wpgpDownloadFileFromFTP(file_remote, wpgpAllCSVFilesPath, username, password, quiet=TRUE)
-
-    df.all.Covariates = utils::read.csv(wpgpAllCSVFilesPath, stringsAsFactors=FALSE)
-
-    return(df.all.Covariates)
-
-  }else{
-
-    df.all.Covariates = utils::read.csv(wpgpAllCSVFilesPath, stringsAsFactors=FALSE)
-
-    return(df.all.Covariates)
   }
+  
+  df.all.Covariates = utils::read.csv(wpgpAllCSVFilesPath, stringsAsFactors=FALSE)
+  return(df.all.Covariates)
 }
 
 
@@ -238,7 +235,11 @@ wpgpGetCountryCovariate <- function(ISO3=NULL,
   file_remote <- paste0(ISO3,'/',df.filtered$Folder,'/',df.filtered$RstName,'.tif')
 
   file_local <- paste0(destDir,'/',df.filtered$RstName,'.tif')
+  
+  ftpReturn <- wpgpDownloadFileFromFTP(file_remote, file_local, username, password, quiet=quiet, method=method)
 
-  return(wpgpDownloadFileFromFTP(file_remote, file_local, username, password, quiet=quiet, method=method))
+  if(!is.null(ftpReturn)){
+    return(file_local)
+  }
 }
 
