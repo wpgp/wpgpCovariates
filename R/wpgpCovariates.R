@@ -199,7 +199,8 @@ wpgpListCountryCovariates <- function(ISO3=NULL,
 #' @export
 #' @examples
 #' wpgpGetCountryCovariate('NPL','px_area','2000','G:/WorldPop_Data/R_Package','ftpUsername','ftpPassword')
-wpgpGetCountryCovariate <- function(ISO3=NULL,
+wpgpGetCountryCovariate <- function(df.user=NULL,
+                                     ISO3=NULL,
                                      covariate=NULL,
                                      year=NULL,
                                      destDir=tempdir(),
@@ -209,23 +210,29 @@ wpgpGetCountryCovariate <- function(ISO3=NULL,
                                      frCSVDownload=FALSE,
                                      method="auto") {
 
-
-  if (!dir.exists(destDir)) stop( paste0("Please check existens destDir: ",destDir))
-  if (is.null(ISO3))  stop("Error: Enter country ISO3" )
-  if (is.null(covariate)) stop("Error: Enter covariate" )
-  if (is.null(year)) stop("Error: Enter year" )
+  if (!dir.exists(destDir)) stop( paste0("Please check destDir exists: ", destDir))
   if (is.null(username)) stop("Error: Enter ftp username" )
   if (is.null(password)) stop("Error: Enter ftp password" )
-
-  df <- wpgpGetCSVFileAllCovariates(username, password, frCSVDownload)
-
-  ISO3 <- toupper(ISO3)
-  covariate <- tolower(covariate)
-  # allow filtering by vectors
-  df.filtered <- df[df$ISO3 %in% ISO3 & df$CvtName %in% covariate & df$Year %in% year, ]
-
-  if (nrow(df.filtered)<1){
-    stop( paste0("Entered Covariates: ",covariate," not present in WP. Please check Year and name of the dataset"))
+  
+  if(df.user){ # provide a full data frame
+    stopifnot(all(c("ISO3","Folder","RStName")) %in% colnames(df.user))
+    df.filtered <- unique(df.user)
+    
+  } else{ # if not providing a data.frame
+    if (is.null(ISO3))  stop("Error: Enter country ISO3" )
+    if (is.null(covariate)) stop("Error: Enter covariate" )
+    if (is.null(year)) stop("Error: Enter year" )
+  
+    df <- wpgpGetCSVFileAllCovariates(username, password, frCSVDownload)
+  
+    ISO3 <- toupper(ISO3)
+    covariate <- tolower(covariate)
+    # allow filtering by vectors
+    df.filtered <- df[df$ISO3 %in% ISO3 & df$CvtName %in% covariate & df$Year %in% year, ]
+  
+    if (nrow(df.filtered)<1){
+      stop( paste0("Entered Covariates: ",covariate," not present in WP. Please check Year and name of the dataset"))
+    }
   }
 
   credentials <- paste(username,password,sep = ":")
