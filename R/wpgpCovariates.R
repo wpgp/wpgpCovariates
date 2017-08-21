@@ -229,10 +229,10 @@ wpgpGetCountryCovariate <- function(df.user=NULL,
     covariate <- tolower(covariate)
     # allow filtering by vectors
     df.filtered <- df[df$ISO3 %in% ISO3 & df$CvtName %in% covariate & df$Year %in% year, ]
+  }
   
-    if (nrow(df.filtered)<1){
-      stop( paste0("Entered Covariates: ",covariate," not present in WP. Please check Year and name of the dataset"))
-    }
+  if (nrow(df.filtered)<1){
+    stop( paste0("Entered Covariates: ",covariate," not present in WP. Please check Year and name of the dataset"))
   }
 
   credentials <- paste(username,password,sep = ":")
