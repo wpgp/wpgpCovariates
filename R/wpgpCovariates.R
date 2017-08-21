@@ -214,9 +214,15 @@ wpgpGetCountryCovariate <- function(df.user=NULL,
   if (is.null(username)) stop("Error: Enter ftp username" )
   if (is.null(password)) stop("Error: Enter ftp password" )
   
-  if(df.user){ # provide a full data frame
-    stopifnot(all(c("ISO3","Folder","RStName")) %in% colnames(df.user))
-    df.filtered <- unique(df.user)
+  if(!is.null(df.user)){ # provide a full data frame
+    if(!all(c("ISO3","Folder","RstName") %in% colnames(df.user))){
+      stop("Error: must supply ISO3, RstName, and Folder data.")
+    } else { 
+      df.filtered <- unique(df.user) 
+      df.filtered$CvtName <- gsub(pattern=paste(tolower(df.filtered$ISO3),"_grid_100m_", sep="", collapse="|"), 
+                                  replacement="", 
+                                  x=df.filtered$RstName)
+    }
     
   } else{ # if not providing a data.frame
     if (is.null(ISO3))  stop("Error: Enter country ISO3" )
