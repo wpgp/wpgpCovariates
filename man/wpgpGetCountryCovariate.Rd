@@ -2,19 +2,22 @@
 % Please edit documentation in R/wpgpCovariates.R
 \name{wpgpGetCountryCovariate}
 \alias{wpgpGetCountryCovariate}
-\title{wpgpListCountryCovariates function will return a list of
-avalible covariates for a country}
+\title{wpgpGetCountryCovariate function will download files and return a list 
+with the file paths to the requested covariates for one or more countries}
 \usage{
-wpgpGetCountryCovariate(ISO3 = NULL, covariate = NULL, year = NULL,
-  destDir = NULL, username = NULL, password = NULL, quiet = TRUE,
-  frCSVDownload = FALSE, method = "auto")
+wpgpGetCountryCovariate(df.user = NULL, ISO3 = NULL, covariate = NULL,
+  year = NULL, destDir = tempdir(), username = NULL, password = NULL,
+  quiet = TRUE, frCSVDownload = FALSE, method = "auto")
 }
 \arguments{
-\item{ISO3}{a country code}
+\item{df.user}{data frame of files to download. Must contain ISO3, Folder, and RstName.
+If not supplied, must give ISO3, year, and covariate}
 
-\item{covariate}{Covariate name}
+\item{ISO3}{a 3-character country code or vector of country codes. Optional if df.user supplied}
 
-\item{year}{Year of the dataset you would like to download}
+\item{covariate}{Covariate name(s). Optional if df.user supplied}
+
+\item{year}{Year(s) of the dataset you would like to download. Optional if df.user supplied}
 
 \item{destDir}{Path to the folder where you want to save raster file}
 
@@ -31,12 +34,18 @@ are "internal", "wininet" (Windows only) "libcurl", "wget" and
 "curl", and there is a value "auto"}
 }
 \value{
-Raster file will be downloaded
+List of files downloaded, including file paths
 }
 \description{
-wpgpListCountryCovariates function will return a list of
-avalible covariates for a country
+wpgpGetCountryCovariate function will download files and return a list 
+with the file paths to the requested covariates for one or more countries
 }
 \examples{
-wpgpGetCountryCovariate('NPL','px_area','2000','G:/WorldPop_Data/R_Package','ftpUsername','ftpPassword')
+wpgpGetCountryCovariate(df.user=NULL,
+                        ISO3='NPL',
+                        covariate='px_area', 
+                        year=2000,
+                        destDir='D:/WorldPop_Data/R_Package',
+                        username='wpftp',
+                        password='qw12wq1sZQ')
 }

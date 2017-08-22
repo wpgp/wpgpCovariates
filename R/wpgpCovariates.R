@@ -200,7 +200,13 @@ wpgpListCountryCovariates <- function(ISO3=NULL,
 #' @return List of files downloaded, including file paths
 #' @export
 #' @examples
-#' wpgpGetCountryCovariate('NPL','px_area', 2000,'G:/WorldPop_Data/R_Package','ftpUsername','ftpPassword')
+#' wpgpGetCountryCovariate(df.user=NULL,
+#'                         ISO3='NPL',
+#'                         covariate='px_area', 
+#'                         year=2000,
+#'                         destDir='D:/WorldPop_Data/R_Package',
+#'                         username='ftpUsername',
+#'                         password='ftpPassword')
 wpgpGetCountryCovariate <- function(df.user=NULL,
                                      ISO3=NULL,
                                      covariate=NULL,
