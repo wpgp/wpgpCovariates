@@ -132,7 +132,7 @@ wpgpListCountries <- function(username, password, verbose=FALSE, frCSVDownload=F
 
 #' wpgpListCountryCovariates function will return a list of
 #' avalible covariates for a country
-#' @param ISO3 a country code
+#' @param ISO3 a 3-character country code or vector of country codes
 #' @param username ftp username to WorldPop ftp server
 #' @param password ftp password to WorldPop ftp server
 #' @param detailed If TRUE, then more information will be given
@@ -154,29 +154,28 @@ wpgpListCountryCovariates <- function(ISO3=NULL,
 
   uISO3 <- toupper(ISO3)
 
-  length_country <-nchar(as.character(uISO3))
-  if (length_country<3 | length_country>3){
-    stop( paste0("country code should be three letters. You entered : ",uISO3," length is ",length_country))
+  if (any(nchar(uISO3)!=3)){
+    stop( paste0("Country code should be three letters. You entered: ", paste(uISO3, collapse=", ")) )
   }
 
   df <- wpgpGetCSVFileAllCovariates(username, password, frCSVDownload)
+  
+  if(any(!uISO3 %in% df$ISO3)){
+    warning( paste0("ISO3 code not found: ", paste(uISO3[which(!uISO3 %in% df$ISO3)])) )
+  }
 
-  if (!any(df$ISO3==uISO3))
-    stop( paste0("Entered ISO3: ",uISO3," does not present in WP"))
-
-
-  df.filtered <- df[df$ISO3 == uISO3,]
+  df.filtered <- df[df$ISO3 %in% uISO3,] 
+  
+  if(nrow(df.filtered)<1){
+    stop( paste0("No ISO3 code found: ", paste(uISO3, collapse=", ")))
+  }
 
   if (detailed){
-
     return(df.filtered)
-
   }else{
-
     keeps <- c("ISO3", "ISOnumber",  "CvtName", "Year", "Description")
     return(df.filtered[keeps])
   }
-
 }
 
 
