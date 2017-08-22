@@ -5,7 +5,9 @@ wpgpCovariates is an R Package interface for downloading raster datasets from [W
 What is WorldPop?
 High spatial resolution, contemporary data on human population distributions are a prerequisite for the accurate measurement of the impacts of population growth, for monitoring changes and for planning interventions. The WorldPop project aims to meet these needs through the provision of detailed and open access population distribution datasets built using transparent approaches.
 
-**Installation**
+Installation
+------------
+
 wpgpCovariates isn't available from CRAN yet, but you can get it from github with:
 
     install.packages("devtools")
@@ -14,7 +16,8 @@ wpgpCovariates isn't available from CRAN yet, but you can get it from github wit
     # load package
     library(wpgpCovariates)
     
-**Basic usage**
+Basic usage
+-----------
 
 After installation you should be able to use three main functions from the library:
 
