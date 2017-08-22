@@ -58,17 +58,32 @@ NPL  524           ccilc_dst011_2000 2000    Distance to cultivated ..
 ....
 ```
 
+Multiple countries can also be supplied to the function.
+```
+wpgpListCountryCovariates(ISO=c("NPL","BTN"), 
+			  username = "ftpUsername", 
+			  password = "ftpPassword")
+
+ISO3 ISOnumber     CvtName           Year    Description
+BTN   64           ccidadminl0       2000    Mastergrid ISO 
+BTN   64           ccilc_dst011_2000 2000    Distance to cultivated ..
+...
+NPL  524           ccidadminl0       2000    Mastergrid ISO 
+NPL  524           ccilc_dst011_2000 2000    Distance to cultivated ..
+....
+```
+
 ----------
 
 **wpgpGetCountryCovariate** will download a raster dataset based on ISO and covariate name.
 
 ```
 > df <- wpgpGetCountryCovariate(ISO3 = "NPL",
-                         covariate = "guf2012_ghsl2000_dst190_2012",
-                         year = 2012,
-                         destDir ="G:\\WorldPop_Data",
-			 username = "ftpUsername", 
-			 password = "ftpPassword")
+                                covariate = "guf2012_ghsl2000_dst190_2012",
+                                year = 2012,
+                                destDir ="G:\\WorldPop_Data",
+			                          username = "ftpUsername", 
+			                          password = "ftpPassword")
 						 
 > df
 $ISO3
@@ -84,14 +99,37 @@ $filepath
 [1] "G:\\WorldPop_Data/npl_grid_100m_guf2012_ghsl2000_dst190_2012.tif"      
 
 ```
-wpgpGetCountryCovariate will return a dataframe with *filepath* where raster was downloaded, *RstName*  full name of the raster, *CvtName* covariate name and *ISO*
+wpgpGetCountryCovariate will return a list with the *filepath* where the raster was downloaded, *RstName* the full name of the raster, *CvtName* covariate name and the *ISO*
         
-You can also download multiple raster by using a list as an input
+You can also download multiple covariates, for multiple years, or countries.
 ```
 wpgpGetCountryCovariate(ISO3 = c("NPL", "BTN"),
-			covariate = c("guf2012_ghsl2000_dst190_2012","px_area"),
-			year = c("2012","2000")
-			destDir ="D:\\WorldPop_Data",
-			username = "ftpUsername", 
-			password = "ftpPassword")
+                  			covariate = c("guf2012_ghsl2000_dst190_2012","px_area"),
+                  			year = c("2012","2000")
+                  			destDir ="D:\\WorldPop_Data",
+                  			username = "ftpUsername", 
+                  			password = "ftpPassword")
+```
+Note that the above command will attempt to retrieve the full combination of ISO3, covariate, and year. If a user has a specific list of files to download, this can be supplied to the function as a dataframe instead of querying by ISO3, covariate, and year. This information is available by returning the detailed results from *wpgpListCountryCovariates* or from a previous return value from *wpgpGetCountryCovariate*.
+
+```
+# start by getting the available files
+allcovariates <- wpgpListCountryCovariatesc(ISO3="NPL","BTN"), detailed=T, username = "ftpUsername", password = "ftpPassword")
+
+# example: only want to retrieve 5 specific covariates from Nepal and Bhutan
+data_example <- allcovariates[c(1,25,50,75,100), c("ISO3","Folder","RstName")]
+
+# download the files to the tempdir() location and save the list to inspect
+file_list <- wpgpGetCountryCovariate(df.user=data_example
+			                               username = "ftpUsername", 
+			                               password = "ftpPassword")
+
+data.frame(file_list)
+ISO3          CvtName                         RstName                                                                           filepath
+BTN       ccidadminl0       btn_grid_100m_ccidadminl0       C:\\Users\\TEST\\Local\\Temp\\Rtmp44dLYH/btn_grid_100m_ccidadminl0.tif
+BTN ccilc_dst160_2014 btn_grid_100m_ccilc_dst160_2014       C:\\Users\\TEST\\Local\\Temp\\Rtmp44dLYH/btn_grid_100m_ccilc_dst160_2014.tif
+BTN     wdpa_dst_2014     btn_grid_100m_wdpa_dst_2014       C:\\Users\\TEST\\Local\\Temp\\Rtmp44dLYH/btn_grid_100m_wdpa_dst_2014.tif
+NPL ccilc_dst160_2014 npl_grid_100m_ccilc_dst160_2014       C:\\Users\\TEST\\Local\\Temp\\Rtmp44dLYH/npl_grid_100m_ccilc_dst160_2014.tif
+NPL     wdpa_dst_2014     npl_grid_100m_wdpa_dst_2014       C:\\Users\\TEST\\Local\\Temp\\Rtmp44dLYH/npl_grid_100m_wdpa_dst_2014.tif
+
 ```
