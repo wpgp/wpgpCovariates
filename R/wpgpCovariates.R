@@ -181,11 +181,12 @@ wpgpListCountryCovariates <- function(ISO3=NULL,
 
 
 
-#' wpgpListCountryCovariates function will return a list of
+#' wpgpGetCountryCovariate function will return a list of
 #' avalible covariates for a country
-#' @param ISO3 a country code
-#' @param year Year of the dataset you would like to download
-#' @param covariate Covariate name
+#' @param df.user data frame of files to download. Must contain ISO3, Folder, and RstName
+#' @param ISO3 a 3-character country code or vector of country codes. Optional if df.user supplied
+#' @param year Year of the dataset you would like to download. Optional if df.user supplied
+#' @param covariate Covariate name. Optional if df.user supplied
 #' @param destDir Path to the folder where you want to save raster file
 #' @param username ftp username to WorldPop ftp server
 #' @param password ftp password to WorldPop ftp server
@@ -195,10 +196,10 @@ wpgpListCountryCovariates <- function(ISO3=NULL,
 #' are "internal", "wininet" (Windows only) "libcurl", "wget" and
 #' "curl", and there is a value "auto"
 #' @rdname wpgpGetCountryCovariate
-#' @return Raster file will be downloaded
+#' @return List of files downloaded, including file paths
 #' @export
 #' @examples
-#' wpgpGetCountryCovariate('NPL','px_area','2000','G:/WorldPop_Data/R_Package','ftpUsername','ftpPassword')
+#' wpgpGetCountryCovariate('NPL','px_area', 2000,'G:/WorldPop_Data/R_Package','ftpUsername','ftpPassword')
 wpgpGetCountryCovariate <- function(df.user=NULL,
                                      ISO3=NULL,
                                      covariate=NULL,
@@ -215,7 +216,10 @@ wpgpGetCountryCovariate <- function(df.user=NULL,
   if (is.null(password)) stop("Error: Enter ftp password" )
   
   if(!is.null(df.user)){ # provide a full data frame
-    if(!all(c("ISO3","Folder","RstName") %in% colnames(df.user))){
+    if(!is.data.frame(df.user)){
+      stop("Error: Expecting a data.frame argument")
+    }
+    if(!all(c("ISO3","Folder","RstName") %in% names(df.user))){
       stop("Error: must supply ISO3, RstName, and Folder data.")
     } else { 
       df.filtered <- unique(df.user) 
@@ -238,7 +242,7 @@ wpgpGetCountryCovariate <- function(df.user=NULL,
   }
   
   if (nrow(df.filtered)<1){
-    stop( paste0("Entered Covariates: ",covariate," not present in WP. Please check Year and name of the dataset"))
+    stop( paste0("Entered Covariates: ", paste(covariate, collapse=", ")," not present in WP. Please check Year and name of the dataset"))
   }
 
   credentials <- paste(username,password,sep = ":")
