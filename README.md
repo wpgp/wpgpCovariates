@@ -26,7 +26,7 @@ After installation you should be able to use three main functions from the libra
 
 **wpgpListCountries** will return a dataframe with all ISO3 available on WorldPop ftp server.
 ```
-wpgpListCountries(username = "ftpUsername", password = "ftpPassword")
+wpgpListCountries(username="ftpUsername", password="ftpPassword")
       
       
       ISO3 ISOnumber                                  NameEnglish
@@ -46,8 +46,8 @@ wpgpListCountries(username = "ftpUsername", password = "ftpPassword")
 **wpgpListCountryCovariates** will return a dataframe of available covariates to download from WorldPop FTP for a country
 ```
 wpgpListCountryCovariates(ISO="NPL", 
-						  username = "ftpUsername", 
-						  password = "ftpPassword")
+			  username = "ftpUsername", 
+			  password = "ftpPassword")
 
 ISO3 ISOnumber     CvtName           Year    Description
 NPL  524           ccidadminl0       2000    Mastergrid ISO 
