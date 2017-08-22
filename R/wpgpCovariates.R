@@ -71,23 +71,22 @@ wpgpDownloadFileFromFTP <- function(file_path, dest_file, username, password, qu
   } else{
     return(1)
   }
-  
 }
 
 # wpgpGetCSVFileAllCovariates function to download csv
 # file from WorldPop ftp server
 # containing a list of avalible Covariates. The csv file
-# will stored in a temporary R folder with a Temporary
+# will be stored in a temporary R folder with a temporary
 # file name and pattern wpgpAllCovariates. This file will be used
-# during querying and downloading a datasets.
+# internally during querying and downloading datasets.
 #
 # @param username ftp username to WorldPop ftp server
 # @param password ftp password to WorldPop ftp server
 # @param quiet If TRUE, suppress status messages (if any), and the progress bar.
 # @param frCSVDownload If TRUE, a new wpgAllCovariates.csv file will
-# be downloaded and old one removed.
+# be downloaded and the old one removed.
 # @rdname wpgpGetCSVFileAllCovariates
-# @return the file will be downloaded.
+# @return Data frame of all covariates.
 #' @importFrom utils read.csv
 wpgpGetCSVFileAllCovariates <- function(username, password, frCSVDownload=FALSE) {
 
@@ -130,7 +129,7 @@ wpgpListCountries <- function(username, password, verbose=FALSE, frCSVDownload=F
 
 
 
-#' wpgpListCountryCovariates function will return a list of
+#' wpgpListCountryCovariates function will return a data frame of
 #' avalible covariates for a country
 #' @param ISO3 a 3-character country code or vector of country codes
 #' @param username ftp username to WorldPop ftp server
@@ -142,6 +141,8 @@ wpgpListCountries <- function(username, password, verbose=FALSE, frCSVDownload=F
 #' @export
 #' @examples
 #' wpgpListCountryCovariates( ISO3="USA", username="ftpUsername", password="ftpPassword" )
+#' 
+#' wpgpListCountryCovariates(ISO3=c("USA","AFG"), username="ftpUsername", password="ftpPassword" )
 wpgpListCountryCovariates <- function(ISO3=NULL,
                                       username=NULL,
                                       password=NULL,
@@ -155,7 +156,7 @@ wpgpListCountryCovariates <- function(ISO3=NULL,
   uISO3 <- toupper(ISO3)
 
   if (any(nchar(uISO3)!=3)){
-    stop( paste0("Country code should be three letters. You entered: ", paste(uISO3, collapse=", ")) )
+    stop( paste0("Country codes should be three letters. You entered: ", paste(uISO3, collapse=", ")) )
   }
 
   df <- wpgpGetCSVFileAllCovariates(username, password, frCSVDownload)
@@ -180,12 +181,13 @@ wpgpListCountryCovariates <- function(ISO3=NULL,
 
 
 
-#' wpgpGetCountryCovariate function will return a list of
-#' avalible covariates for a country
-#' @param df.user data frame of files to download. Must contain ISO3, Folder, and RstName
+#' wpgpGetCountryCovariate function will download files and return a list 
+#' with the file paths to the requested covariates for one or more countries
+#' @param df.user data frame of files to download. Must contain ISO3, Folder, and RstName.
+#' If not supplied, must give ISO3, year, and covariate
 #' @param ISO3 a 3-character country code or vector of country codes. Optional if df.user supplied
-#' @param year Year of the dataset you would like to download. Optional if df.user supplied
-#' @param covariate Covariate name. Optional if df.user supplied
+#' @param year Year(s) of the dataset you would like to download. Optional if df.user supplied
+#' @param covariate Covariate name(s). Optional if df.user supplied
 #' @param destDir Path to the folder where you want to save raster file
 #' @param username ftp username to WorldPop ftp server
 #' @param password ftp password to WorldPop ftp server
