@@ -24,6 +24,8 @@ After installation you should be able to use three main functions from the libra
  - wpgpListCountries
  - wpgpListCountryCovariates
  - wpgpGetCountryCovariate
+ - wpgpGetPOPTable
+ - wpgpGetZonalStats
 
 ----------
 
@@ -32,7 +34,7 @@ After installation you should be able to use three main functions from the libra
 wpgpListCountries(username = "ftpUsername", password = "ftpPassword")
       
       
-      ISO3 ISOnumber                                  NameEnglish
+      ISO3 ISOnumber                                  NameEnglish 
 1      ABW       533                                        Aruba
 51     AFG         4                                  Afghanistan
 101    AGO        24                                       Angola
@@ -46,15 +48,15 @@ wpgpListCountries(username = "ftpUsername", password = "ftpPassword")
 
 ----------
 
-**wpgpListCountryCovariates** will return a dataframe of available covariates to download from WorldPop FTP for a country. This function could be used to query the name of the dataset which then could be downloaded for a country.
+**wpgpListCountryCovariates** will return a dataframe of available covariates to download from WorldPop FTP for a country. This function could be used to query the name of the dataset which then could be downloaded for a country. Also it will show for which dataset a ZonalStats is avalible
 ```
 wpgpListCountryCovariates(ISO="NPL", 
 			  username = "ftpUsername", 
 			  password = "ftpPassword")
 
-ISO3 ISOnumber     CvtName           Year    Description
-NPL  524           ccidadminl0       2000    Mastergrid ISO 
-NPL  524           ccilc_dst011_2000 2000    Distance to cultivated ..
+ISO3 ISOnumber     CvtName           Year    Description            ZonalStats
+NPL  524           ccidadminl0       2000    Mastergrid ISO              FALSE     
+NPL  524           ccilc_dst011_2000 2000    Distance to cultivated       TRUE
 ....
 ```
 
@@ -95,3 +97,42 @@ wpgpGetCountryCovariate(ISO3 = c("NPL", "BTN"),
 			username = "ftpUsername", 
 			password = "ftpPassword")
 ```
+
+----------
+
+**wpgpGetPOPTable** will download a CSV file of population based on ISO and covariate name. Function will return a dataframe with two columes "ADMINID", "ADMINPOP"
+
+```
+> df <- wpgpCovariates::wpgpGetPOPTable("AGO",2000,"G:/WorldPop_Data/",
+			  username = "ftpUsername", 
+			  password = "ftpPassword")
+						 
+> df
+ ADMINID    ADMINPOP
+1    241457   34970.426
+2    241458  349494.179
+3    241459    7977.856
+4    241460    2681.160
+5    241461   97864.592
+6    241462   77712.153
+```
+
+----------
+
+**wpgpGetZonalStats** will download a CSV file of ZonalStats based on ISO and covariate name. Function will return a dataframe with two columes "ADMINID", and name of the covariate 
+
+```
+> df <- wpgpGetZonalStats("AGO","ccilc_dst011_2000","G:/WorldPop_Data/",
+			  username = "ftpUsername", 
+			  password = "ftpPassword")
+						 
+> df
+ ADMINID    ccilc_dst011_2000
+1    241457  1.56037065
+2    241458  1.56037065
+3    241459  1.61910718
+4    241460  1.19869991
+5    241461  0.85845653
+6    241462  2.56389180
+```
+
