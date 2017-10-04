@@ -131,11 +131,11 @@ file_list <- wpgpGetCountryCovariate(df.user=data_example,
 
 data.frame(file_list)
 ISO3          CvtName                         RstName   filepath
-BTN       ccidadminl0       btn_grid_100m_ccidadminl0   C:\\Temp\\Rtmp44dLYH/btn_grid_100m_ccidadminl0.tif
-BTN ccilc_dst160_2014 btn_grid_100m_ccilc_dst160_2014   C:\\Temp\\Rtmp44dLYH/btn_grid_100m_ccilc_dst160_2014.tif
-BTN     wdpa_dst_2014     btn_grid_100m_wdpa_dst_2014   C:\\Temp\\Rtmp44dLYH/btn_grid_100m_wdpa_dst_2014.tif
-NPL ccilc_dst160_2014 npl_grid_100m_ccilc_dst160_2014   C:\\Temp\\Rtmp44dLYH/npl_grid_100m_ccilc_dst160_2014.tif
-NPL     wdpa_dst_2014     npl_grid_100m_wdpa_dst_2014   C:\\Temp\\Rtmp44dLYH/npl_grid_100m_wdpa_dst_2014.tif
+BTN       ccidadminl0       btn_grid_100m_ccidadminl0   C:\\Temp\\btn_grid_100m_ccidadminl0.tif
+BTN ccilc_dst160_2014 btn_grid_100m_ccilc_dst160_2014   C:\\Temp\\btn_grid_100m_ccilc_dst160_2014.tif
+BTN     wdpa_dst_2014     btn_grid_100m_wdpa_dst_2014   C:\\Temp\\btn_grid_100m_wdpa_dst_2014.tif
+NPL ccilc_dst160_2014 npl_grid_100m_ccilc_dst160_2014   C:\\Temp\\npl_grid_100m_ccilc_dst160_2014.tif
+NPL     wdpa_dst_2014     npl_grid_100m_wdpa_dst_2014   C:\\Temp\\npl_grid_100m_wdpa_dst_2014.tif
 
 ```
 
