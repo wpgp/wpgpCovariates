@@ -164,9 +164,9 @@ wpgpListCountries <- function(username, password, verbose=FALSE, frCSVDownload=F
 #' @return Dataframe
 #' @export
 #' @examples
-#' wpgpListCountryCovariates( ISO3="NPL", username="ftpUsername", password="ftpPassword" )
+#' wpgpListCountryCovariates( ISO3="USA", username="ftpUsername", password="ftpPassword" )
 #' 
-#' wpgpListCountryCovariates(ISO3=c("NPL","AFG"), username="ftpUsername", password="ftpPassword" )
+#' wpgpListCountryCovariates(ISO3=c("USA","AFG"), username="ftpUsername", password="ftpPassword" )
 wpgpListCountryCovariates <- function(ISO3=NULL,
                                       username=NULL,
                                       password=NULL,
