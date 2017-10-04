@@ -19,7 +19,7 @@ wpgpCovariates isn't available from CRAN yet, but you can get it from github wit
     
 **Basic usage**
 
-After installation you should be able to use three main functions from the library:
+After installation you should be able to use five main functions from the library:
 
  - wpgpListCountries
  - wpgpListCountryCovariates
