@@ -2,14 +2,14 @@
 % Please edit documentation in R/wpgpCovariates.R
 \name{wpgpListCountryCovariates}
 \alias{wpgpListCountryCovariates}
-\title{wpgpListCountryCovariates function will return a list of
+\title{wpgpListCountryCovariates function will return a data frame of
 avalible covariates for a country}
 \usage{
 wpgpListCountryCovariates(ISO3 = NULL, username = NULL, password = NULL,
   detailed = FALSE, frCSVDownload = FALSE)
 }
 \arguments{
-\item{ISO3}{a country code}
+\item{ISO3}{a 3-character country code or vector of country codes}
 
 \item{username}{ftp username to WorldPop ftp server}
 
@@ -23,9 +23,11 @@ wpgpListCountryCovariates(ISO3 = NULL, username = NULL, password = NULL,
 Dataframe
 }
 \description{
-wpgpListCountryCovariates function will return a list of
+wpgpListCountryCovariates function will return a data frame of
 avalible covariates for a country
 }
 \examples{
-wpgpListCountryCovariates( ISO3="USA", username="ftpUsername", password="ftpPassword" )
+wpgpListCountryCovariates( ISO3="NPL", username="ftpUsername", password="ftpPassword" )
+
+wpgpListCountryCovariates(ISO3=c("NPL","AFG"), username="ftpUsername", password="ftpPassword" )
 }
