@@ -116,23 +116,26 @@ Note that the above command will attempt to retrieve the full combination of ISO
 
 ```
 # start by getting the available files
-allcovariates <- wpgpListCountryCovariatesc(ISO3="NPL","BTN"), detailed=T, username = "ftpUsername", password = "ftpPassword")
+allcovariates <- wpgpListCountryCovariatesc(ISO3=("NPL","BTN"), 
+					    detailed=T, 
+					    username = "ftpUsername", 
+					    password = "ftpPassword")
 
 # example: only want to retrieve 5 specific covariates from Nepal and Bhutan
 data_example <- allcovariates[c(1,25,50,75,100), c("ISO3","Folder","RstName")]
 
 # download the files to the tempdir() location and save the list to inspect
-file_list <- wpgpGetCountryCovariate(df.user=data_example
-			                               username = "ftpUsername", 
-			                               password = "ftpPassword")
+file_list <- wpgpGetCountryCovariate(df.user=data_example, 
+				     username = "ftpUsername",
+				     password = "ftpPassword")
 
 data.frame(file_list)
-ISO3          CvtName                         RstName                                                                           filepath
-BTN       ccidadminl0       btn_grid_100m_ccidadminl0       C:\\Users\\TEST\\Local\\Temp\\Rtmp44dLYH/btn_grid_100m_ccidadminl0.tif
-BTN ccilc_dst160_2014 btn_grid_100m_ccilc_dst160_2014       C:\\Users\\TEST\\Local\\Temp\\Rtmp44dLYH/btn_grid_100m_ccilc_dst160_2014.tif
-BTN     wdpa_dst_2014     btn_grid_100m_wdpa_dst_2014       C:\\Users\\TEST\\Local\\Temp\\Rtmp44dLYH/btn_grid_100m_wdpa_dst_2014.tif
-NPL ccilc_dst160_2014 npl_grid_100m_ccilc_dst160_2014       C:\\Users\\TEST\\Local\\Temp\\Rtmp44dLYH/npl_grid_100m_ccilc_dst160_2014.tif
-NPL     wdpa_dst_2014     npl_grid_100m_wdpa_dst_2014       C:\\Users\\TEST\\Local\\Temp\\Rtmp44dLYH/npl_grid_100m_wdpa_dst_2014.tif
+ISO3          CvtName                         RstName   filepath
+BTN       ccidadminl0       btn_grid_100m_ccidadminl0   C:\\Temp\\Rtmp44dLYH/btn_grid_100m_ccidadminl0.tif
+BTN ccilc_dst160_2014 btn_grid_100m_ccilc_dst160_2014   C:\\Temp\\Rtmp44dLYH/btn_grid_100m_ccilc_dst160_2014.tif
+BTN     wdpa_dst_2014     btn_grid_100m_wdpa_dst_2014   C:\\Temp\\Rtmp44dLYH/btn_grid_100m_wdpa_dst_2014.tif
+NPL ccilc_dst160_2014 npl_grid_100m_ccilc_dst160_2014   C:\\Temp\\Rtmp44dLYH/npl_grid_100m_ccilc_dst160_2014.tif
+NPL     wdpa_dst_2014     npl_grid_100m_wdpa_dst_2014   C:\\Temp\\Rtmp44dLYH/npl_grid_100m_wdpa_dst_2014.tif
 
 ```
 
