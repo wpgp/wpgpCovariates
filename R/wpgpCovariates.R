@@ -198,7 +198,7 @@ wpgpListCountryCovariates <- function(ISO3=NULL,
   if (detailed){
     return(df.filtered)
   }else{
-    keeps <- c("ISO3", "ISOnumber",  "CvtName", "Year", "Description","ZonalStats")
+    keeps <- c("ISO3", "ISOnumber",  "CvtName", "Year", "Description","ZS_mean","ZS_sum","ZS_min","ZS_max")
     return(df.filtered[keeps])
   }
 }
@@ -355,6 +355,7 @@ wpgpGetPOPTable <- function(ISO3=NULL,
 #  files from WorldPop ftp server
 #' @param ISO3 a 3-character country code
 #' @param covariate Covariate name.
+#' @param stat Either as character: 'mean', 'min', 'max', 'sum'.
 #' @param destDir Path to the folder where you want to save ZonalStats file
 #' @param username ftp username to WorldPop ftp server
 #' @param password ftp password to WorldPop ftp server
@@ -371,6 +372,7 @@ wpgpGetPOPTable <- function(ISO3=NULL,
 #' wpgpGetZonalStats("AGO","ccilc_dst011_2000","G:/WorldPop/",username="ftpUsername",password="ftpPassword")
 wpgpGetZonalStats <- function(ISO3=NULL,
                               covariate=NULL,
+                              stat='mean',
                               destDir=tempdir(),
                               username=NULL,
                               password=NULL,
@@ -391,18 +393,27 @@ wpgpGetZonalStats <- function(ISO3=NULL,
   
   ISO3 <- toupper(ISO3)
   covariate <- tolower(covariate)
-  df.filtered <- df[df$ISO3 %in% ISO3 & df$CvtName %in% covariate & df$ZonalStats==TRUE, ]
+  stat <- tolower(stat)
+  
+  if (!stat %in% c('mean','max','min','sum')){
+    stop("Error: Enter stat, either: 'mean', 'min', 'max', 'sum'" )
+  }
+  
+
+  
+  df.filtered <- df[df$ISO3 %in% ISO3 & df$CvtName %in% covariate & df[,paste0('ZS_',stat)]==TRUE, ]
+  
   
   
   if (nrow(df.filtered)<1){
-    stop( paste0("Entered Covariates: ", paste(covariate, collapse=", ")," not present 
+    stop( paste0("Entered Covariates: ", paste(covariate, collapse=", ")," does not have zonal stats present 
           in WP or ZonalStats was not calcualted. Please check name of the dataset"))
   }  
   
   
   
-  file_remote <- paste0('ZonalStatistics/',ISO3,'/',ISO3,'_',covariate,'_ZS.csv')
-  file_local <- paste0(destDir,'/', ISO3,'_',covariate,'_ZS.csv')
+  file_remote <- paste0('ZonalStatistics/',ISO3,'/',stat,'/',tolower(ISO3),'_',covariate,'_ZS_',stat,'.csv')
+  file_local <- paste0(destDir,'/', tolower(ISO3),'_',covariate,'_ZS_',stat,'.csv')
   
   if (overwrite){
     if(file.exists(file_local)){ unlink(file_local, recursive = TRUE, force = FALSE)} 

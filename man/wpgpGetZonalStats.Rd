@@ -4,14 +4,16 @@
 \alias{wpgpGetZonalStats}
 \title{wpgpGetZonalStats function will download a ZonalStats csv}
 \usage{
-wpgpGetZonalStats(ISO3 = NULL, covariate = NULL, destDir = tempdir(),
-  username = NULL, password = NULL, quiet = TRUE, overwrite = TRUE,
-  frCSVDownload = FALSE, method = "auto")
+wpgpGetZonalStats(ISO3 = NULL, covariate = NULL, stat = "mean",
+  destDir = tempdir(), username = NULL, password = NULL, quiet = TRUE,
+  overwrite = TRUE, frCSVDownload = FALSE, method = "auto")
 }
 \arguments{
 \item{ISO3}{a 3-character country code}
 
 \item{covariate}{Covariate name.}
+
+\item{stat}{Either as character: 'mean', 'min', 'max', 'sum'.}
 
 \item{destDir}{Path to the folder where you want to save ZonalStats file}
 
