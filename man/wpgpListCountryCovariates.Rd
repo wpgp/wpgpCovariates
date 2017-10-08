@@ -29,5 +29,5 @@ avalible covariates for a country
 \examples{
 wpgpListCountryCovariates( ISO3="USA", username="ftpUsername", password="ftpPassword" )
 
-wpgpListCountryCovariates(ISO3=c("USA","MEX"), username="ftpUsername", password="ftpPassword" )
+wpgpListCountryCovariates(ISO3=c("USA","AFG"), username="ftpUsername", password="ftpPassword" )
 }

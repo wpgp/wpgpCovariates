@@ -19,11 +19,13 @@ wpgpCovariates isn't available from CRAN yet, but you can get it from github wit
     
 **Basic usage**
 
-After installation you should be able to use three main functions from the library:
+After installation you should be able to use five main functions from the library:
 
  - wpgpListCountries
  - wpgpListCountryCovariates
  - wpgpGetCountryCovariate
+ - wpgpGetPOPTable
+ - wpgpGetZonalStats
 
 ----------
 
@@ -114,22 +116,64 @@ Note that the above command will attempt to retrieve the full combination of ISO
 
 ```
 # start by getting the available files
-allcovariates <- wpgpListCountryCovariatesc(ISO3="NPL","BTN"), detailed=T, username = "ftpUsername", password = "ftpPassword")
+allcovariates <- wpgpListCountryCovariatesc(ISO3=("NPL","BTN"), 
+					    detailed=T, 
+					    username = "ftpUsername", 
+					    password = "ftpPassword")
 
 # example: only want to retrieve 5 specific covariates from Nepal and Bhutan
 data_example <- allcovariates[c(1,25,50,75,100), c("ISO3","Folder","RstName")]
 
 # download the files to the tempdir() location and save the list to inspect
-file_list <- wpgpGetCountryCovariate(df.user=data_example
-			                               username = "ftpUsername", 
-			                               password = "ftpPassword")
+file_list <- wpgpGetCountryCovariate(df.user=data_example, 
+				     username = "ftpUsername",
+				     password = "ftpPassword")
 
 data.frame(file_list)
-ISO3          CvtName                         RstName                                                                           filepath
-BTN       ccidadminl0       btn_grid_100m_ccidadminl0       C:\\Users\\TEST\\Local\\Temp\\Rtmp44dLYH/btn_grid_100m_ccidadminl0.tif
-BTN ccilc_dst160_2014 btn_grid_100m_ccilc_dst160_2014       C:\\Users\\TEST\\Local\\Temp\\Rtmp44dLYH/btn_grid_100m_ccilc_dst160_2014.tif
-BTN     wdpa_dst_2014     btn_grid_100m_wdpa_dst_2014       C:\\Users\\TEST\\Local\\Temp\\Rtmp44dLYH/btn_grid_100m_wdpa_dst_2014.tif
-NPL ccilc_dst160_2014 npl_grid_100m_ccilc_dst160_2014       C:\\Users\\TEST\\Local\\Temp\\Rtmp44dLYH/npl_grid_100m_ccilc_dst160_2014.tif
-NPL     wdpa_dst_2014     npl_grid_100m_wdpa_dst_2014       C:\\Users\\TEST\\Local\\Temp\\Rtmp44dLYH/npl_grid_100m_wdpa_dst_2014.tif
+ISO3          CvtName                         RstName   filepath
+BTN       ccidadminl0       btn_grid_100m_ccidadminl0   C:\\Temp\\btn_grid_100m_ccidadminl0.tif
+BTN ccilc_dst160_2014 btn_grid_100m_ccilc_dst160_2014   C:\\Temp\\btn_grid_100m_ccilc_dst160_2014.tif
+BTN     wdpa_dst_2014     btn_grid_100m_wdpa_dst_2014   C:\\Temp\\btn_grid_100m_wdpa_dst_2014.tif
+NPL ccilc_dst160_2014 npl_grid_100m_ccilc_dst160_2014   C:\\Temp\\npl_grid_100m_ccilc_dst160_2014.tif
+NPL     wdpa_dst_2014     npl_grid_100m_wdpa_dst_2014   C:\\Temp\\npl_grid_100m_wdpa_dst_2014.tif
 
 ```
+
+----------
+
+**wpgpGetPOPTable** will download a CSV file of population based on ISO and covariate name. Function will return a dataframe with two columes "ADMINID", "ADMINPOP"
+
+```
+> df <- wpgpCovariates::wpgpGetPOPTable("AGO",2000,"G:/WorldPop_Data/",
+			  username = "ftpUsername", 
+			  password = "ftpPassword")
+						 
+> df
+ ADMINID    ADMINPOP
+1    241457   34970.426
+2    241458  349494.179
+3    241459    7977.856
+4    241460    2681.160
+5    241461   97864.592
+6    241462   77712.153
+```
+
+----------
+
+**wpgpGetZonalStats** will download a CSV file of ZonalStats based on ISO and covariate name. Function will return a dataframe with two columes "ADMINID", and name of the covariate 
+
+```
+> df <- wpgpGetZonalStats("AGO","ccilc_dst011_2000","G:/WorldPop_Data/",
+			  username = "ftpUsername", 
+			  password = "ftpPassword")
+						 
+> df
+ ADMINID    ccilc_dst011_2000
+1    241457  1.56037065
+2    241458  1.56037065
+3    241459  1.61910718
+4    241460  1.19869991
+5    241461  0.85845653
+6    241462  2.56389180
+```
+

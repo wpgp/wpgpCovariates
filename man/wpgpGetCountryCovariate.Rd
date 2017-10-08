@@ -6,8 +6,8 @@
 with the file paths to the requested covariates for one or more countries}
 \usage{
 wpgpGetCountryCovariate(df.user = NULL, ISO3 = NULL, covariate = NULL,
-  year = NULL, destDir = tempdir(), username = NULL, password = NULL,
-  quiet = TRUE, frCSVDownload = FALSE, method = "auto")
+  destDir = tempdir(), username = NULL, password = NULL, quiet = TRUE,
+  frCSVDownload = FALSE, method = "auto")
 }
 \arguments{
 \item{df.user}{data frame of files to download. Must contain ISO3, Folder, and RstName.
@@ -16,8 +16,6 @@ If not supplied, must give ISO3, year, and covariate}
 \item{ISO3}{a 3-character country code or vector of country codes. Optional if df.user supplied}
 
 \item{covariate}{Covariate name(s). Optional if df.user supplied}
-
-\item{year}{Year(s) of the dataset you would like to download. Optional if df.user supplied}
 
 \item{destDir}{Path to the folder where you want to save raster file}
 
@@ -41,11 +39,5 @@ wpgpGetCountryCovariate function will download files and return a list
 with the file paths to the requested covariates for one or more countries
 }
 \examples{
-wpgpGetCountryCovariate(df.user=NULL,
-                        ISO3='NPL',
-                        covariate='px_area', 
-                        year=2000,
-                        destDir='D:/WorldPop_Data/R_Package',
-                        username='wpftp',
-                        password='qw12wq1sZQ')
+wpgpGetCountryCovariate(df.user = NULL,'NPL','px_area','G:/WorldPop/','ftpUsername','ftpPassword')
 }

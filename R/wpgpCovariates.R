@@ -1,3 +1,27 @@
+# Function to check if population tabel 
+# exist in WorldPop FTP
+#is.unpopulated <- function(x) x %in% c("ATA","BVT","IOT","CHN","CYP","ATF","HMD","HUN",
+#                                       "IND","ISR","JEY","KEN","MWI","MTQ","MEX","POL",
+#                                       "SRB","SVK","SGS", "UMI")
+#
+is.populated <- function(x) x %in% c('ABW','AFG','AGO','AIA','ALA','ALB','AND','ARE','ARG',
+  'ARM','ASM','ATG','AUS','AUT','AZE','BDI','BEL','BEN','BES','BFA','BGD','BGR','BHR','BHS',
+  'BIH','BLM','BLR','BLZ','BMU','BOL','BRA','BRB','BRN','BTN','BWA','CAF','CAN','CHE','CHL',
+  'CIV','CMR','COD','COG','COK','COL','COM','CPV','CRI','CUB','CUW','CYM','CZE','DEU','DJI',
+  'DMA','DNK','DOM','DZA','ECU','EGY','ERI','ESH','ESP','EST','ETH','FIN','FJI','FLK','FRA',
+  'FRO','FSM','GAB','GBR','GEO','GGY','GHA','GIB','GIN','GLP','GMB','GNB','GNQ','GRC','GRD',
+  'GRL','GTM','GUF','GUM','GUY','HKG','HND','HRV','HTI','IDN','IMN','IRL','IRN','IRQ','ISL',
+  'ITA','JAM','JOR','JPN','KAZ','KGZ','KHM','KIR','KNA','KOR','KOS','KWT','LAO','LBN','LBR',
+  'LBY','LCA','LIE','LKA','LSO','LTU','LUX','LVA','MAC','MAF','MAR','MCO','MDA','MDG','MDV',
+  'MHL','MKD','MLI','MLT','MMR','MNE','MNG','MNP','MOZ','MRT','MSR','MUS','MYS','MYT','NAM',
+  'NCL','NER','NFK','NGA','NIC','NIU','NLD','NOR','NPL','NRU','NZL','OMN','PAK','PAN','PCN',
+  'PER','PHL','PLW','PNG','PRI','PRK','PRT','PRY','PSE','PYF','QAT','REU','ROU','RUS','RWA',
+  'SAU','SDN','SEN','SGP','SHN','SJM','SLB','SLE','SLV','SMR','SOM','SPM','SPR','SSD','STP',
+  'SUR','SVN','SWE','SWZ','SXM','SYC','SYR','TCA','TCD','TGO','THA','TJK','TKL','TKM','TLS',
+  'TON','TTO','TUN','TUR','TUV','TWN','TZA','UGA','UKR','URY','USA','UZB','VAT','VCT','VEN',
+  'VGB','VIR','VNM','VUT','WLF','WSM','YEM','ZAF','ZMB','ZWE')
+
+
 # Function to get time difference in human readable format
 # Input is start time and end time
 # If "frm" is set to "hms" then output will be h:m:s
@@ -39,7 +63,7 @@ wpgpDownloadFileFromFTP <- function(file_path, dest_file, username, password, qu
 
   wpgpFTP <- "ftp.worldpop.org.uk"
   credentials <- paste(username, password, sep = ":")
-  file_remote <-paste0('ftp://',credentials,'@',wpgpFTP,'/WP515640_Global/Covariates/',file_path)
+  file_remote <-paste0('ftp://',credentials,'@',wpgpFTP,'/WP515640_Global/',file_path)
 
   tmStartDw  <- Sys.time()
 
@@ -99,7 +123,7 @@ wpgpGetCSVFileAllCovariates <- function(username, password, frCSVDownload=FALSE)
   if(!file.exists(wpgpAllCSVFilesPath) | frCSVDownload){
 
     credentials <- paste(username,password,sep = ":")
-    file_remote <-paste0('wpgAllCovariates.csv')
+    file_remote <-paste0('Covariates/wpgAllCovariates.csv')
 
     wpgpDownloadFileFromFTP(file_remote, wpgpAllCSVFilesPath, username, password, quiet=TRUE)
   }
@@ -142,7 +166,7 @@ wpgpListCountries <- function(username, password, verbose=FALSE, frCSVDownload=F
 #' @examples
 #' wpgpListCountryCovariates( ISO3="USA", username="ftpUsername", password="ftpPassword" )
 #' 
-#' wpgpListCountryCovariates(ISO3=c("USA","MEX"), username="ftpUsername", password="ftpPassword" )
+#' wpgpListCountryCovariates(ISO3=c("USA","AFG"), username="ftpUsername", password="ftpPassword" )
 wpgpListCountryCovariates <- function(ISO3=NULL,
                                       username=NULL,
                                       password=NULL,
@@ -174,7 +198,7 @@ wpgpListCountryCovariates <- function(ISO3=NULL,
   if (detailed){
     return(df.filtered)
   }else{
-    keeps <- c("ISO3", "ISOnumber",  "CvtName", "Year", "Description")
+    keeps <- c("ISO3", "ISOnumber",  "CvtName", "Year", "Description","ZS_mean","ZS_sum","ZS_min","ZS_max")
     return(df.filtered[keeps])
   }
 }
@@ -186,7 +210,6 @@ wpgpListCountryCovariates <- function(ISO3=NULL,
 #' @param df.user data frame of files to download. Must contain ISO3, Folder, and RstName.
 #' If not supplied, must give ISO3, year, and covariate
 #' @param ISO3 a 3-character country code or vector of country codes. Optional if df.user supplied
-#' @param year Year(s) of the dataset you would like to download. Optional if df.user supplied
 #' @param covariate Covariate name(s). Optional if df.user supplied
 #' @param destDir Path to the folder where you want to save raster file
 #' @param username ftp username to WorldPop ftp server
@@ -200,17 +223,10 @@ wpgpListCountryCovariates <- function(ISO3=NULL,
 #' @return List of files downloaded, including file paths
 #' @export
 #' @examples
-#' wpgpGetCountryCovariate(df.user=NULL,
-#'                         ISO3='NPL',
-#'                         covariate='px_area', 
-#'                         year=2000,
-#'                         destDir='D:/WorldPop_Data/R_Package',
-#'                         username='ftpUsername',
-#'                         password='ftpPassword')
+#' wpgpGetCountryCovariate(df.user = NULL,'NPL','px_area','G:/WorldPop/','ftpUsername','ftpPassword')
 wpgpGetCountryCovariate <- function(df.user=NULL,
                                      ISO3=NULL,
                                      covariate=NULL,
-                                     year=NULL,
                                      destDir=tempdir(),
                                      username=NULL,
                                      password=NULL,
@@ -238,18 +254,17 @@ wpgpGetCountryCovariate <- function(df.user=NULL,
   } else{ # if not providing a data.frame
     if (is.null(ISO3))  stop("Error: Enter country ISO3" )
     if (is.null(covariate)) stop("Error: Enter covariate" )
-    if (is.null(year)) stop("Error: Enter year" )
-  
+
     df <- wpgpGetCSVFileAllCovariates(username, password, frCSVDownload)
   
     ISO3 <- toupper(ISO3)
     covariate <- tolower(covariate)
     # allow filtering by vectors
-    df.filtered <- df[df$ISO3 %in% ISO3 & df$CvtName %in% covariate & df$Year %in% year, ]
+    df.filtered <- df[df$ISO3 %in% ISO3 & df$CvtName %in% covariate, ]
   }
   
   if (nrow(df.filtered)<1){
-    stop( paste0("Entered Covariates: ", paste(covariate, collapse=", ")," not present in WP. Please check Year and name of the dataset"))
+    stop( paste0("Entered Covariates: ", paste(covariate, collapse=", ")," not present in WP. Please check name of the dataset"))
   }
 
   credentials <- paste(username,password,sep = ":")
@@ -258,7 +273,7 @@ wpgpGetCountryCovariate <- function(df.user=NULL,
   outFiles <- vector(mode="character", length=nrow(df.filtered))
   # loop over all inputs
   for(i in 1:nrow(df.filtered)){
-    file_remote <- paste0(df.filtered[i,"ISO3"],'/', df.filtered[i,"Folder"],'/', df.filtered[i,"RstName"],'.tif')
+    file_remote <- paste0('Covariates/',df.filtered[i,"ISO3"],'/', df.filtered[i,"Folder"],'/', df.filtered[i,"RstName"],'.tif')
     file_local <- paste0(destDir,'/', df.filtered[i,"RstName"],'.tif')
     
     ftpReturn <- wpgpDownloadFileFromFTP(file_remote, file_local, username, password, quiet=quiet, method=method)
@@ -273,5 +288,148 @@ wpgpGetCountryCovariate <- function(df.user=NULL,
   returnList <- as.list(df.filtered[c("ISO3","CvtName","RstName")])
   returnList$filepath <- outFiles
   return(returnList)
+}
+
+
+#' wpgpGetPOPTable function will download a population csv
+#  files from WorldPop ftp server
+#' @param ISO3 a 3-character country code
+#' @param year Year of the dataset you would like to download. 
+#' @param destDir Path to the folder where you want to save poptable file
+#' @param username ftp username to WorldPop ftp server
+#' @param password ftp password to WorldPop ftp server
+#' @param quiet Download Without any messages if TRUE
+#' @param overwrite Logical. Overwrite the poptable csv file if it already exists
+#' @param method Method to be used for downloading files. Current download methods
+#' are "internal", "wininet" (Windows only) "libcurl", "wget" and
+#' "curl", and there is a value "auto"
+#' @rdname wpgpGetPOPTable
+#' @return dataframe
+#' @export
+#' @examples
+#' wpgpGetPOPTable("AGO",2000,"G:/WorldPop/",username = "ftpUsername",password = "ftpPassword")
+wpgpGetPOPTable <- function(ISO3=NULL,
+                            year=NULL,
+                            destDir=tempdir(),
+                            username=NULL,
+                            password=NULL,
+                            quiet=TRUE,
+                            overwrite=TRUE,
+                            method="auto") {
+  
+  if (!dir.exists(destDir)) stop( paste0("Please check destDir exists: ", destDir))
+  if (is.null(username)) stop("Error: Enter ftp username" )
+  if (is.null(password)) stop("Error: Enter ftp password" )
+  if (is.null(ISO3))  stop("Error: Enter country ISO3" )
+  if (is.null(year)) stop("Error: Enter year" )
+
+  
+  ISO3 <- toupper(ISO3)
+  
+  if (!is.populated(ISO3)) stop( paste0("Error: WorldPop FTP server Does not have POP table for: ", ISO3))
+  
+  file_remote <- paste0('CensusTables/',tolower(ISO3),'_population_2000_2020.csv')
+  file_local <- paste0(destDir,'/', tolower(ISO3),'_population_2000_2020.csv')
+  
+  if (overwrite){
+    if(file.exists(file_local)){ unlink(file_local, recursive = TRUE, force = FALSE)} 
+  }     
+  
+  ftpReturn <- wpgpDownloadFileFromFTP(file_remote, file_local, username, password, quiet=quiet, method=method)
+  
+  if(!is.null(ftpReturn)){
+    
+    df <- utils::read.csv(file_local, stringsAsFactors=FALSE,header = TRUE)
+    df <- df[ c('GID', paste0('P_',year)) ]
+    colnames(df) <-  c("ADMINID", "ADMINPOP") 
+    return(df)
+    
+  } else{
+    return(NULL)
+  }
+  
+}
+
+
+#' wpgpGetZonalStats function will download a ZonalStats csv
+#  files from WorldPop ftp server
+#' @param ISO3 a 3-character country code
+#' @param covariate Covariate name.
+#' @param stat Either as character: 'mean', 'min', 'max', 'sum'.
+#' @param destDir Path to the folder where you want to save ZonalStats file
+#' @param username ftp username to WorldPop ftp server
+#' @param password ftp password to WorldPop ftp server
+#' @param quiet Download Without any messages if TRUE
+#' @param overwrite Logical. Overwrite the ZonalStats csv file if it already exists
+#' @param frCSVDownload If TRUE, a new wpgAllCovariates.csv file will downloaded
+#' @param method Method to be used for downloading files. Current download methods
+#' are "internal", "wininet" (Windows only) "libcurl", "wget" and
+#' "curl", and there is a value "auto"
+#' @rdname wpgpGetZonalStats
+#' @return dataframe
+#' @export
+#' @examples
+#' wpgpGetZonalStats("AGO","ccilc_dst011_2000","G:/WorldPop/",username="ftpUsername",password="ftpPassword")
+wpgpGetZonalStats <- function(ISO3=NULL,
+                              covariate=NULL,
+                              stat='mean',
+                              destDir=tempdir(),
+                              username=NULL,
+                              password=NULL,
+                              quiet=TRUE,
+                              overwrite=TRUE,
+                              frCSVDownload=FALSE,
+                              method="auto") {
+  
+  if (!dir.exists(destDir)) stop( paste0("Please check destDir exists: ", destDir))
+  if (is.null(username)) stop("Error: Enter ftp username" )
+  if (is.null(password)) stop("Error: Enter ftp password" )
+  if (is.null(ISO3))  stop("Error: Enter country ISO3" )
+  if (is.null(covariate)) stop("Error: Enter covariate" )
+  
+  
+  df <- wpgpGetCSVFileAllCovariates(username, password )
+  
+  
+  ISO3 <- toupper(ISO3)
+  covariate <- tolower(covariate)
+  stat <- tolower(stat)
+  
+  if (!stat %in% c('mean','max','min','sum')){
+    stop("Error: Enter stat, either: 'mean', 'min', 'max', 'sum'" )
+  }
+  
+
+  
+  df.filtered <- df[df$ISO3 %in% ISO3 & df$CvtName %in% covariate & df[,paste0('ZS_',stat)]==TRUE, ]
+  
+  
+  
+  if (nrow(df.filtered)<1){
+    stop( paste0("Entered Covariates: ", paste(covariate, collapse=", ")," does not have zonal stats present 
+          in WP or ZonalStats was not calcualted. Please check name of the dataset"))
+  }  
+  
+  
+  
+  file_remote <- paste0('ZonalStatistics/',ISO3,'/',stat,'/',tolower(ISO3),'_',covariate,'_ZS_',stat,'.csv')
+  file_local <- paste0(destDir,'/', tolower(ISO3),'_',covariate,'_ZS_',stat,'.csv')
+  
+  if (overwrite){
+    if(file.exists(file_local)){ unlink(file_local, recursive = TRUE, force = FALSE)} 
+  }     
+  
+  ftpReturn <- wpgpDownloadFileFromFTP(file_remote, file_local, username, password, quiet=quiet, method=method)
+  
+  if(!is.null(ftpReturn)){
+    
+    df <- utils::read.csv(file_local, stringsAsFactors=FALSE,header = TRUE)
+    colnames(df) <-  c("ADMINID", covariate) 
+    return(df)
+    
+  } else{
+    return(NULL)
+  }
+  
 }
 
