@@ -114,7 +114,7 @@ Note that the above command will attempt to retrieve the full combination of ISO
 
 ```
 # start by getting the available files
-allcovariates <- wpgpListCountryCovariatesc(ISO3=("NPL","BTN"), 
+allcovariates <- wpgpListCountryCovariates(ISO3=c("NPL","BTN"), 
 					    detailed=T, 
 					    username = "ftpUsername", 
 					    password = "ftpPassword")
