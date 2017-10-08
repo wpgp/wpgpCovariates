@@ -81,24 +81,23 @@ NPL  524           ccilc_dst011_2000 2000    Distance to cultivated ..
 
 ```
 > df <- wpgpGetCountryCovariate(ISO3 = "NPL",
-                                covariate = "guf2012_ghsl2000_dst190_2012",
-                                year = 2012,
+                                covariate = "ccilc_dst011_2000"
                                 destDir ="G:\\WorldPop_Data",
-			                          username = "ftpUsername", 
-			                          password = "ftpPassword")
+				username = "ftpUsername", 
+				password = "ftpPassword")
 						 
 > df
 $ISO3
 [1] "NPL"
 
 $CvtName
-[1] "guf2012_ghsl2000_dst190_2012"
+[1] "ccilc_dst011_2000"
 
 $RstName
-[1] "npl_grid_100m_guf2012_ghsl2000_dst190_2012"
+[1] "npl_grid_100m_ccilc_dst011_2000"
 
 $filepath
-[1] "G:\\WorldPop_Data/npl_grid_100m_guf2012_ghsl2000_dst190_2012.tif"      
+[1] "G:\\WorldPop_Data/npl_grid_100m_ccilc_dst011_2000.tif"      
 
 ```
 wpgpGetCountryCovariate will return a list with the *filepath* where the raster was downloaded, *RstName* the full name of the raster, *CvtName* covariate name and the *ISO*
@@ -106,8 +105,7 @@ wpgpGetCountryCovariate will return a list with the *filepath* where the raster 
 You can also download multiple covariates, for multiple years, or countries.
 ```
 wpgpGetCountryCovariate(ISO3 = c("NPL", "BTN"),
-                  			covariate = c("guf2012_ghsl2000_dst190_2012","px_area"),
-                  			year = c("2012","2000")
+                  			covariate = c("ccilc_dst011_2000","px_area")
                   			destDir ="D:\\WorldPop_Data",
                   			username = "ftpUsername", 
                   			password = "ftpPassword")
