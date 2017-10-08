@@ -38,5 +38,5 @@ dataframe
 wpgpGetZonalStats function will download a ZonalStats csv
 }
 \examples{
-wpgpGetZonalStats("AGO","ccilc_dst011_2000","G:/WorldPop/",username="ftpUsername",password="ftpPassword")
+wpgpGetZonalStats("AGO","ccilc_dst011_2000", stat = "mean" ,"G:/WorldPop/",username="ftpUsername",password="ftpPassword")
 }
