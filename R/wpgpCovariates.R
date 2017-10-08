@@ -399,18 +399,12 @@ wpgpGetZonalStats <- function(ISO3=NULL,
     stop("Error: Enter stat, either: 'mean', 'min', 'max', 'sum'" )
   }
   
-
-  
   df.filtered <- df[df$ISO3 %in% ISO3 & df$CvtName %in% covariate & df[,paste0('ZS_',stat)]==TRUE, ]
-  
-  
   
   if (nrow(df.filtered)<1){
     stop( paste0("Entered Covariates: ", paste(covariate, collapse=", ")," does not have zonal stats present 
           in WP or ZonalStats was not calcualted. Please check name of the dataset"))
   }  
-  
-  
   
   file_remote <- paste0('ZonalStatistics/',ISO3,'/',stat,'/',tolower(ISO3),'_',covariate,'_ZS_',stat,'.csv')
   file_local <- paste0(destDir,'/', tolower(ISO3),'_',covariate,'_ZS_',stat,'.csv')
