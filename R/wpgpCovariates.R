@@ -414,7 +414,7 @@ wpgpGetZonalStats <- function(ISO3=NULL,
   if(!is.null(ftpReturn)){
     
     df <- utils::read.csv(file_local, stringsAsFactors=FALSE,header = TRUE)
-    colnames(dfn) <-  c("ADMINID", covariate) 
+    colnames(df) <-  c("ADMINID", covariate) 
     #remove all 0 adminID 
     return(df[df$ADMINID != 0, ])
     
