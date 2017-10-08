@@ -163,7 +163,7 @@ NPL     wdpa_dst_2014     npl_grid_100m_wdpa_dst_2014   C:\\Temp\\npl_grid_100m_
 **wpgpGetZonalStats** will download a CSV file of ZonalStats based on ISO and covariate name. Function will return a dataframe with two columes "ADMINID", and name of the covariate 
 
 ```
-> df <- wpgpGetZonalStats("AGO","ccilc_dst011_2000","G:/WorldPop_Data/",
+> df <- wpgpGetZonalStats("AGO","ccilc_dst011_2000", stat = "mean" ,"G:/WorldPop_Data/",
 			  username = "ftpUsername", 
 			  password = "ftpPassword")
 						 
