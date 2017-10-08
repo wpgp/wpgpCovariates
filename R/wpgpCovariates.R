@@ -1,9 +1,5 @@
 # Function to check if population tabel 
 # exist in WorldPop FTP
-#is.unpopulated <- function(x) x %in% c("ATA","BVT","IOT","CHN","CYP","ATF","HMD","HUN",
-#                                       "IND","ISR","JEY","KEN","MWI","MTQ","MEX","POL",
-#                                       "SRB","SVK","SGS", "UMI")
-#
 is.populated <- function(x) x %in% c('ABW','AFG','AGO','AIA','ALA','ALB','AND','ARE','ARG',
   'ARM','ASM','ATG','AUS','AUT','AZE','BDI','BEL','BEN','BES','BFA','BGD','BGR','BHR','BHS',
   'BIH','BLM','BLR','BLZ','BMU','BOL','BRA','BRB','BRN','BTN','BWA','CAF','CAN','CHE','CHL',
@@ -419,7 +415,7 @@ wpgpGetZonalStats <- function(ISO3=NULL,
     
     df <- utils::read.csv(file_local, stringsAsFactors=FALSE,header = TRUE)
     #remove all 0 adminID 
-    dfn <- df[df != 0, ]
+    dfn <- df[df$ADMINID != 0, ]
     colnames(dfn) <-  c("ADMINID", covariate) 
     return(dfn)
     
