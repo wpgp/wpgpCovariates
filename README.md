@@ -50,7 +50,7 @@ wpgpListCountries(username = "ftpUsername", password = "ftpPassword")
 
 **wpgpListCountryCovariates** will return a dataframe of available covariates to download from WorldPop FTP for a country. This function could be used to query the name of the dataset which then could be downloaded for a country.
 ```
-wpgpListCountryCovariates(ISO="NPL", 
+wpgpListCountryCovariates(ISO3="NPL", 
 			  username = "ftpUsername", 
 			  password = "ftpPassword")
 
@@ -62,7 +62,7 @@ NPL  524           ccilc_dst011_2000 2000    Distance to cultivated ..
 
 Multiple countries can also be supplied to the function.
 ```
-wpgpListCountryCovariates(ISO=c("NPL","BTN"), 
+wpgpListCountryCovariates(ISO3=c("NPL","BTN"), 
 			  username = "ftpUsername", 
 			  password = "ftpPassword")
 
