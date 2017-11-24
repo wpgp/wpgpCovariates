@@ -12,7 +12,7 @@ Installation
 wpgpCovariates isn't available from CRAN yet, but you can get it from github with:
 
     install.packages("devtools")
-    devtools::install_github("worldpopglobal/wpgpCovariates")
+    devtools::install_github("wpgp/wpgpCovariates")
     
     # load package
     library(wpgpCovariates)
